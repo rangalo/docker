@@ -1,4 +1,4 @@
-FROM rangalo/debian
+FROM rangalo/ubuntu:14.10
 
 MAINTAINER rangalo "hard.mehta@gmail.com"
 
