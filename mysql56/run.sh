@@ -87,17 +87,15 @@ if [ -n ${DB_NAME} ]; then
     echo "=> Done."
 
     if [ -n ${DB_USER} ]; then
-        echo "=> Creating user ${DB_USER} with password ${DB_PASS}"
-        mysql -u root -e "CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
-        echo "=> Done."
-        echo ""
         echo "=> Granting access to database ${DB_NAME} to user ${DB_USER}"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%'"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
         echo "=> Done."
     fi
     mysqladmin -u root shutdown
 fi
 
+# disable error log
+sed 's/^log_error/# log_error/' -i /etc/mysql/my.cnf
 exec /usr/bin/mysqld_safe
 
 
