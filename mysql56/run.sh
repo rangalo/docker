@@ -36,8 +36,6 @@ function createAdminUser() {
 
     echo "=> Creating admin user ${ADMIN_USER} with password ${ADMIN_PASS} ..."
 
-    mysql -u root -e "CREATE USER '${ADMIN_USER}'@'localhost' IDENTIFIED BY '${ADMIN_PASS}'"
-    mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'localhost'"
     mysql -u root -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASS}'"
     mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%'"
 
@@ -90,7 +88,6 @@ if [[ -n ${DB_NAME} ]]; then
 
     if [ -n ${DB_USER} ]; then
         echo "=> Granting access to database ${DB_NAME} to user ${DB_USER}"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}'"
         mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
         echo "=> Done."
     fi
