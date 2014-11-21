@@ -5,12 +5,12 @@ set -e
 VOLUME_HOME="/var/lib/mysql"
 LOG="/var/log/mysql/error.log"a
 
-ADMIN_USER="admin"
-ADMIN_PASS="secret"
+ADMIN_USER=${ADMIN_USER:-admin}
+ADMIN_PASS=${ADMIN_USER:-secret}
 
-DB_NAME="testdb"
-DB_USER="hardik"
-DB_PASS="pass"
+DB_NAME=${DB_NAME:-testdb}
+DB_USER=${DB_USER:-hardik}
+DB_PASS=${DB_PASS:-pass}
 
 
 function startMySQL() {
@@ -36,7 +36,9 @@ function createAdminUser() {
 
     echo "=> Creating admin user ${ADMIN_USER} with password ${ADMIN_PASS} ..."
 
+    mysql -u root -e "CREATE USER '${ADMIN_USER}'@'localhost' IDENTIFIED BY '${ADMIN_PASS}'"
     mysql -u root -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASS}'"
+    mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'localhost'"
     mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%'"
 
     echo "=> Done."
@@ -80,7 +82,7 @@ else
     echo "=> Using an existing volume of MySQL"
 fi
 
-if [ -n ${DB_NAME} ]; then
+if [[ -n ${DB_NAME} ]]; then
     startMySQL
     echo "=> Creating the dabase ${DB_NAME}"
     mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` DEFAULT CHARACTER SET \`utf8\` COLLATE \`utf8_unicode_ci\`"
@@ -88,7 +90,8 @@ if [ -n ${DB_NAME} ]; then
 
     if [ -n ${DB_USER} ]; then
         echo "=> Granting access to database ${DB_NAME} to user ${DB_USER}"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost'"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%'"
         echo "=> Done."
     fi
     mysqladmin -u root shutdown
