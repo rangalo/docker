@@ -3,7 +3,7 @@
 set -e
 
 VOLUME_HOME="/var/lib/mysql"
-LOG="/var/log/mysql/error.log"a
+LOG="/var/log/syslog"
 
 ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_USER:-secret}
@@ -57,7 +57,7 @@ function createAdminUser() {
 
 
 # disable error log
-# sed 's/^log_error/# log_error/' -i /etc/mysql/my.cnf
+sed 's/^log_error/# log_error/' -i /etc/mysql/my.cnf
 
 # fix the permissions and ownership
 mkdir -p -m 700 /var/lib/mysql
@@ -97,8 +97,6 @@ if [[ -n ${DB_NAME} ]]; then
     mysqladmin -u root shutdown
 fi
 
-# disable error log
-sed 's/^log_error/# log_error/' -i /etc/mysql/my.cnf
 exec /usr/bin/mysqld_safe
 
 
