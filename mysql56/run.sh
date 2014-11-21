@@ -37,8 +37,8 @@ function createAdminUser() {
     echo "=> Creating admin user ${ADMIN_USER} with password ${ADMIN_PASS} ..."
 
     mysql -u root -e "CREATE USER '${ADMIN_USER}'@'localhost' IDENTIFIED BY '${ADMIN_PASS}'"
-    mysql -u root -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASS}'"
     mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'localhost'"
+    mysql -u root -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASS}'"
     mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%'"
 
     echo "=> Done."
