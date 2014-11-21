@@ -90,8 +90,8 @@ if [[ -n ${DB_NAME} ]]; then
 
     if [ -n ${DB_USER} ]; then
         echo "=> Granting access to database ${DB_NAME} to user ${DB_USER}"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost'"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%'"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}'"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
         echo "=> Done."
     fi
     mysqladmin -u root shutdown
