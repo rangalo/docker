@@ -6,6 +6,7 @@ RUN wget -q  --no-cookies --no-check http://download.java.net/glassfish/4.1/rele
     mv -v glassfish-4.1.zip /opt/oracle/ && \
     cd /opt/oracle && unzip -q glassfish-4.1.zip && \
     ln -svn /opt/oracle/glassfish4 /opt/oracle/glassfish && \
+    rm -f /opt/oracle/glassfish-4.1.zip && \
     echo "GLASSFISH_HOME=/opt/oracle/glassfish"
 
 ENV GLASSFISH_HOME /opt/oracle/glassfish
