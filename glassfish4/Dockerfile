@@ -13,7 +13,11 @@ ENV GLASSFISH_HOME /opt/oracle/glassfish
 ENV PATH $GLASSFISH_HOME/bin:$PATH
 
 ADD run.sh /run.sh
-RUN chmod +x run.sh
+ADD change_admin_pass.expect /change_admin_pass.expect
+ADD enable_secure_login.expect /enable_secure_login.expect
+
+RUN chmod +x run.sh && \
+    chmod +x *.expect
 
 # 4848 (administration), 8080 (HTTP listener), 8181 (HTTPS listener)
 EXPOSE 4848 8080 8181
