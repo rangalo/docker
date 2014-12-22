@@ -7,6 +7,7 @@ CH_PWFILE="./.admin_pw_changed"
 
 function change_admin_password() {
 
+    echo ""
     echo "=> Changing admin password..."
     /change_admin_pass.expect ${ADMIN_PASS}
     echo "=> Done."
@@ -14,6 +15,8 @@ function change_admin_password() {
     echo "=> Enabling secure admin..."
     /enable_secure_login.expect ${ADMIN_PASS}
     echo "=> Done."
+
+    touch $CH_PWFILE
 
     echo "========================================================================"
     echo "You can now connect to this Glassfish server using:"
