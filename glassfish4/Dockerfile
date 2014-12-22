@@ -22,4 +22,4 @@ RUN chmod +x run.sh && \
 # 4848 (administration), 8080 (HTTP listener), 8181 (HTTPS listener)
 EXPOSE 4848 8080 8181
 
-# CMD ["/run.sh"]
+CMD ["/run.sh"]
