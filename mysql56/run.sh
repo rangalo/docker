@@ -6,7 +6,7 @@ VOLUME_HOME="/var/lib/mysql"
 LOG="/var/log/syslog"
 
 ADMIN_USER=${ADMIN_USER:-admin}
-ADMIN_PASS=${ADMIN_USER:-secret}
+ADMIN_PASS=${ADMIN_PASS:-secret}
 
 DB_NAME=${DB_NAME:-testdb}
 DB_USER=${DB_USER:-hardik}
@@ -87,7 +87,7 @@ if [[ -n ${DB_NAME} ]]; then
     echo "=> Done."
 
     if [ -n ${DB_USER} ]; then
-        echo "=> Granting access to database ${DB_NAME} to user ${DB_USER}"
+        echo "=> Granting access to database ${DB_NAME} to user ${DB_USER} wht password=${DB_PASS}"
         mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
         echo "=> Done."
     fi
