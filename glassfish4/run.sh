@@ -31,9 +31,11 @@ function change_admin_password() {
 
 if [[ ! -f ${CH_PWFILE} ]]; then
 
+    echo "=> Setting up the container for the first time..."
     asadmin start-domain
     change_admin_password
     asadmin stop-domain
+    echo "=> Done."
 fi
 
 echo "=> Starting the glassfish server..."
