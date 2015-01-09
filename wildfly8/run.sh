@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ADMIN_USER=${ADMIN_USER:-admin}
-ADMIN_PASS=${ADMIN_USER:-secret}
+ADMIN_PASS=${ADMIN_PASS:-secret}
 
 
 ${JBOSS_HOME}/bin/add-user.sh "${ADMIN_USER}"  "${ADMIN_PASS}" -s
