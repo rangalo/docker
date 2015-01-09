@@ -6,8 +6,8 @@ RUN wget -q  --no-cookies --no-check http://download.jboss.org/wildfly/8.2.0.Fin
     mkdir /opt/redhat && \
     mv -v wildfly-8.2.0.Final.zip /opt/redhat && \
     cd /opt/redhat && unzip -q wildfly-8.2.0.Final.zip && \
-    ln -svn /opt/redhat/wildfly /opt/readhat/wildfly-8.2.0.Final && \
-    rm -f /opt/redhat/wildfly-8.2.0.Final && \
+    ln -svn /opt/redhat/wildfly-wildfly-8.2.0.Final  /opt/readhat/wildfly && \
+    rm -f /opt/redhat/wildfly-8.2.0.Final.zip && \
     echo "JBOSS_HOME=/opt/redhat/wildfly"
 
 ENV JBOSS_HOME /opt/redhat/wildfly
