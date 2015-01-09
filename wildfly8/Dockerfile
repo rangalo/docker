@@ -2,7 +2,7 @@ FROM rangalo/java7
 
 MAINTAINER rangalo "hard.mehta@gmail.com"
 
-RUN wget -q  --no-cookies --no-check http://download.jboss.org/wildfly/wildfly-8.2.0.Final.zip && \
+RUN wget -q  --no-cookies --no-check http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip && \
     mkdir /opt/redhat && \
     mv -v wildfly-8.2.0.Final.zip /opt/redhat && \
     cd /opt/redhat && unzip -q wildfly-8.2.0.Final.zip && \
