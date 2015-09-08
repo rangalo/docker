@@ -1,4 +1,4 @@
-FROM ubuntu:14.10
+FROM ubuntu:15.10
 
 MAINTAINER rangalo "hard.mehta@gmail.com"
 RUN apt-get update
