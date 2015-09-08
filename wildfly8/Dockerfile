@@ -1,4 +1,4 @@
-FROM rangalo/java7
+FROM rangalo/java8
 
 MAINTAINER rangalo "hard.mehta@gmail.com"
 
