@@ -7,7 +7,7 @@ RUN mkdir -p /opt/oracle && \
     mv -v  jdk-7u79-linux-x64.tar.gz /opt/oracle && \ 
     cd /opt/oracle && tar zxf jdk-7u79-linux-x64.tar.gz && \
     cd /opt/oracle/ && rm -vf jdk-7u79-linux-x64.tar.gz  && \
-    ln -svn /opt/oracle/jdk1.7.0_60 /opt/oracle/jdk && \
+    ln -svn /opt/oracle/jdk1.7.0_79 /opt/oracle/jdk && \
     echo "JAVA_HOME=/opt/oracle/jdk" >> /etc/environment
 
 ENV JAVA_HOME /opt/oracle/jdk
