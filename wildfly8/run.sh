@@ -7,7 +7,7 @@ ADMIN_PASS=${ADMIN_PASS:-secret}
 ${JBOSS_HOME}/bin/add-user.sh "${ADMIN_USER}"  "${ADMIN_PASS}" -s
 
 echo "========================================================================"
-echo "You can now connect to this Glassfish server using:"
+echo "You can now connect to this Wildfly server using:"
 echo ""
 echo "     ${ADMIN_USER}:$ADMIN_PASS"
 echo ""
