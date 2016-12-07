@@ -7,6 +7,7 @@ LOG="/var/log/syslog"
 
 ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-secret}
+ROOT_PASS=${ROOT_PASS:-secret}
 
 DB_NAME=${DB_NAME:-testdb}
 DB_USER=${DB_USER:-hardik}
@@ -16,7 +17,6 @@ DB_PASS=${DB_PASS:-pass}
 function startMySQL() {
 
     /usr/bin/mysqld_safe > /dev/null 2>&1 &
-
     # timeout in 1 min.
     LOOP_LIMIT=13
     for (( i=0 ; ; i++ )); do
@@ -26,8 +26,29 @@ function startMySQL() {
         fi
         echo "=> Waiting for confirmation of MySQL service startup, trying ${i}/${LOOP_LIMIT} ..."
         sleep 5
-        mysql -uroot -e "status" > /dev/null 2>&1 && break
+        mysql -uroot -p${ROOT_PASS} -e "status" > /dev/null 2>&1 && break
     done
+}
+
+function changeRootPassword() {
+    
+    echo "=> Changing root password to: $ROOT_PASS"
+    echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$ROOT_PASS';" > /mysql-init.txt
+    /usr/bin/mysqld_safe --init-file=/mysql-init.txt > /dev/null 2>&1 &
+    LOOP_LIMIT=13
+    for (( i=0 ; ; i++ )); do
+        if [ ${i} -eq ${LOOP_LIMIT} ]; then
+            echo "Timout. Error log is shown below:"
+            tail -n 100 ${LOG}
+        fi
+        echo "=> Waiting for confirmation of MySQL service startup, trying ${i}/${LOOP_LIMIT} ..."
+        sleep 5
+        mysql -uroot -p${ROOT_PASS} -e "status" > /dev/null 2>&1 && break
+    done
+    echo "=> Root password changed"
+    echo "=> Stopping mysql_safe"
+    mysqladmin -u root -p${ROOT_PASS} shutdown
+    echo "=> mysql_safe stopped"
 }
 
 function createAdminUser() {
@@ -36,8 +57,11 @@ function createAdminUser() {
 
     echo "=> Creating admin user ${ADMIN_USER} with password ${ADMIN_PASS} ..."
 
-    mysql -u root -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASS}'"
-    mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%'"
+    mysql -u root -p${ROOT_PASS} -e "CREATE USER '${ADMIN_USER}'@'localhost' IDENTIFIED BY '${ADMIN_PASS}'"
+    mysql -u root -p${ROOT_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'localhost' WITH GRANT OPTION"
+
+    mysql -u root -p${ROOT_PASS} -e "CREATE USER '${ADMIN_USER}'@'%' IDENTIFIED BY '${ADMIN_PASS}'"
+    mysql -u root -p${ROOT_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO '${ADMIN_USER}'@'%' WITH GRANT OPTION"
 
     echo "=> Done."
 
@@ -50,7 +74,7 @@ function createAdminUser() {
     echo "MySQL user 'root' has no password but only allows local connections"
     echo "========================================================================"
 
-    mysqladmin -u root shutdown
+    mysqladmin -u root -p${ROOT_PASS}  shutdown
 }
 
 
@@ -71,30 +95,21 @@ if [[ ! -d $VOLUME_HOME/mysql ]]; then
     if [ ! -f /usr/share/mysql/my-default.cnf ] ; then
         cp /etc/mysql/my.cnf /usr/share/mysql/my-default.cnf
     fi 
-    mysql_install_db > /dev/null 2>&1
+    # mysql_install_db > /dev/null 2>&1
+
+    mysqld --initialize
     echo "=> Done!"  
     echo "=> Creating admin user ..."
-    
+   
+    changeRootPassword
     createAdminUser
 else
     echo "=> Using an existing volume of MySQL"
 fi
 
-if [[ -n ${DB_NAME} ]]; then
-    startMySQL
-    echo "=> Creating the dabase ${DB_NAME}"
-    mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` DEFAULT CHARACTER SET \`utf8\` COLLATE \`utf8_unicode_ci\`"
-    echo "=> Done."
 
-    if [ -n ${DB_USER} ]; then
-        echo "=> Granting access to database ${DB_NAME} to user ${DB_USER} wht password=${DB_PASS}"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}'"
-        echo "=> Done."
-    fi
-    mysqladmin -u root shutdown
-fi
-
-exec /usr/bin/mysqld_safe
+echo "=> Starting mysql db"
+exec /usr/bin/mysqld_safe --bind-address=0.0.0.0
 
 
 

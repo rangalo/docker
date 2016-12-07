@@ -11,7 +11,6 @@ RUN apt-get update && \
 RUN rm -rf /var/lib/mysql/*
 
 ADD mysqld-charset.cnf /etc/mysql/conf.d/mysqld-charset.cnf
-ADD mysqld-listen.cnf /etc/mysql/conf.d/mysqld-listen.cnf
 ADD mysqld-skip-name-resolv.cnf /etc/mysql/conf.d/mysqld-skip-name-resolv.cnf
 
 ADD run.sh /run.sh
