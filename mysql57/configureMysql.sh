@@ -9,9 +9,6 @@ ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-secret}
 ROOT_PASS=${ROOT_PASS:-secret}
 
-DB_NAME=${DB_NAME:-testdb}
-DB_USER=${DB_USER:-hardik}
-DB_PASS=${DB_PASS:-pass}
 
 
 function startMySQL() {
