@@ -106,7 +106,7 @@ fi
 
 
 echo "=> Starting mysql db"
-exec /usr/bin/mysqld_safe --bind-address=0.0.0.0 > /dev/null 2>&1 &
+exec /usr/bin/mysqld_safe --bind-address=0.0.0.0 
 
 
 
