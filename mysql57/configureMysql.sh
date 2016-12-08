@@ -104,7 +104,7 @@ else
     echo "=> Using an existing volume of MySQL"
 fi
 
-
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 echo "=> Starting mysql db"
 exec /usr/bin/mysqld_safe --bind-address=0.0.0.0 
 
